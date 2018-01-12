@@ -34,7 +34,7 @@ func NewWeaviateMetaGetParams() WeaviateMetaGetParams {
 type WeaviateMetaGetParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface

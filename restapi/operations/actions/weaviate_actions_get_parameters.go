@@ -17,7 +17,9 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
@@ -36,13 +38,17 @@ func NewWeaviateActionsGetParams() WeaviateActionsGetParams {
 type WeaviateActionsGetParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*Unique ID of the action.
 	  Required: true
 	  In: path
 	*/
 	ActionID strfmt.UUID
+	/*Takes a snapshot back in time, in case not set it will show the most recent results.
+	  In: query
+	*/
+	Timesnap *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -51,8 +57,15 @@ func (o *WeaviateActionsGetParams) BindRequest(r *http.Request, route *middlewar
 	var res []error
 	o.HTTPRequest = r
 
+	qs := runtime.Values(r.URL.Query())
+
 	rActionID, rhkActionID, _ := route.Params.GetOK("actionId")
 	if err := o.bindActionID(rActionID, rhkActionID, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qTimesnap, qhkTimesnap, _ := qs.GetOK("timesnap")
+	if err := o.bindTimesnap(qTimesnap, qhkTimesnap, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -73,6 +86,24 @@ func (o *WeaviateActionsGetParams) bindActionID(rawData []string, hasKey bool, f
 		return errors.InvalidType("actionId", "path", "strfmt.UUID", raw)
 	}
 	o.ActionID = *(value.(*strfmt.UUID))
+
+	return nil
+}
+
+func (o *WeaviateActionsGetParams) bindTimesnap(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("timesnap", "query", "int64", raw)
+	}
+	o.Timesnap = &value
 
 	return nil
 }

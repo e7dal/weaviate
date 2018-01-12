@@ -22,7 +22,6 @@ import (
 
 // Meta Contains meta information of the current Weaviate instance.
 // swagger:model Meta
-
 type Meta struct {
 
 	// actions schema
@@ -34,12 +33,6 @@ type Meta struct {
 	// things schema
 	ThingsSchema *SemanticSchema `json:"thingsSchema,omitempty"`
 }
-
-/* polymorph Meta actionsSchema false */
-
-/* polymorph Meta hostname false */
-
-/* polymorph Meta thingsSchema false */
 
 // Validate validates this meta
 func (m *Meta) Validate(formats strfmt.Registry) error {

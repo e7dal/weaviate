@@ -22,12 +22,10 @@ import (
 
 // KeyTokenGetResponse key token get response
 // swagger:model KeyTokenGetResponse
-
 type KeyTokenGetResponse struct {
 	KeyGetResponse
 
-	// Key for user to use.
-	Token strfmt.UUID `json:"token,omitempty"`
+	KeyTokenGetResponseAllOf1
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -39,14 +37,11 @@ func (m *KeyTokenGetResponse) UnmarshalJSON(raw []byte) error {
 	}
 	m.KeyGetResponse = aO0
 
-	var data struct {
-		Token strfmt.UUID `json:"token,omitempty"`
-	}
-	if err := swag.ReadJSON(raw, &data); err != nil {
+	var aO1 KeyTokenGetResponseAllOf1
+	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-
-	m.Token = data.Token
+	m.KeyTokenGetResponseAllOf1 = aO1
 
 	return nil
 }
@@ -61,17 +56,11 @@ func (m KeyTokenGetResponse) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	var data struct {
-		Token strfmt.UUID `json:"token,omitempty"`
-	}
-
-	data.Token = m.Token
-
-	jsonData, err := swag.WriteJSON(data)
+	aO1, err := swag.WriteJSON(m.KeyTokenGetResponseAllOf1)
 	if err != nil {
 		return nil, err
 	}
-	_parts = append(_parts, jsonData)
+	_parts = append(_parts, aO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -81,6 +70,10 @@ func (m *KeyTokenGetResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.KeyGetResponse.Validate(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.KeyTokenGetResponseAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

@@ -36,7 +36,7 @@ func NewWeaviateThingsDeleteParams() WeaviateThingsDeleteParams {
 type WeaviateThingsDeleteParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*Unique ID of the thing.
 	  Required: true

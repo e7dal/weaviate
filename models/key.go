@@ -22,12 +22,10 @@ import (
 
 // Key key
 // swagger:model Key
-
 type Key struct {
 	KeyCreate
 
-	// parent
-	Parent *SingleRef `json:"parent,omitempty"`
+	KeyAllOf1
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -39,14 +37,11 @@ func (m *Key) UnmarshalJSON(raw []byte) error {
 	}
 	m.KeyCreate = aO0
 
-	var data struct {
-		Parent *SingleRef `json:"parent,omitempty"`
-	}
-	if err := swag.ReadJSON(raw, &data); err != nil {
+	var aO1 KeyAllOf1
+	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-
-	m.Parent = data.Parent
+	m.KeyAllOf1 = aO1
 
 	return nil
 }
@@ -61,17 +56,11 @@ func (m Key) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	var data struct {
-		Parent *SingleRef `json:"parent,omitempty"`
-	}
-
-	data.Parent = m.Parent
-
-	jsonData, err := swag.WriteJSON(data)
+	aO1, err := swag.WriteJSON(m.KeyAllOf1)
 	if err != nil {
 		return nil, err
 	}
-	_parts = append(_parts, jsonData)
+	_parts = append(_parts, aO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -84,32 +73,13 @@ func (m *Key) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateParent(formats); err != nil {
+	if err := m.KeyAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Key) validateParent(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Parent) { // not required
-		return nil
-	}
-
-	if m.Parent != nil {
-
-		if err := m.Parent.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("parent")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 

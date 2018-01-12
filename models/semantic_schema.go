@@ -15,7 +15,6 @@ package models
 
 import (
 	"encoding/json"
-	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -26,14 +25,13 @@ import (
 
 // SemanticSchema Definitions of semantic schemas (also see: https://github.com/creativesoftwarefdn/weaviate-semantic-schemas)
 // swagger:model SemanticSchema
-
 type SemanticSchema struct {
 
 	// URL of the context
 	AtContext strfmt.URI `json:"@context,omitempty"`
 
-	// Semantic classes that are available.
-	Classes []*SemanticSchemaClass `json:"classes"`
+	// classes
+	Classes SemanticSchemaClasses `json:"classes"`
 
 	// Email of the maintainer.
 	Maintainer strfmt.Email `json:"maintainer,omitempty"`
@@ -48,26 +46,9 @@ type SemanticSchema struct {
 	Version string `json:"version,omitempty"`
 }
 
-/* polymorph SemanticSchema @context false */
-
-/* polymorph SemanticSchema classes false */
-
-/* polymorph SemanticSchema maintainer false */
-
-/* polymorph SemanticSchema name false */
-
-/* polymorph SemanticSchema type false */
-
-/* polymorph SemanticSchema version false */
-
 // Validate validates this semantic schema
 func (m *SemanticSchema) Validate(formats strfmt.Registry) error {
 	var res []error
-
-	if err := m.validateClasses(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
 
 	if err := m.validateType(formats); err != nil {
 		// prop
@@ -77,33 +58,6 @@ func (m *SemanticSchema) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *SemanticSchema) validateClasses(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Classes) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.Classes); i++ {
-
-		if swag.IsZero(m.Classes[i]) { // not required
-			continue
-		}
-
-		if m.Classes[i] != nil {
-
-			if err := m.Classes[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("classes" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
 	return nil
 }
 

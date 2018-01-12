@@ -39,6 +39,8 @@ func NewWeaviateThingsValidateOK() *WeaviateThingsValidateOK {
 // WriteResponse to the client
 func (o *WeaviateThingsValidateOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(200)
 }
 
@@ -60,6 +62,8 @@ func NewWeaviateThingsValidateUnauthorized() *WeaviateThingsValidateUnauthorized
 // WriteResponse to the client
 func (o *WeaviateThingsValidateUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(401)
 }
 
@@ -80,6 +84,8 @@ func NewWeaviateThingsValidateForbidden() *WeaviateThingsValidateForbidden {
 
 // WriteResponse to the client
 func (o *WeaviateThingsValidateForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(403)
 }
@@ -144,6 +150,8 @@ func NewWeaviateThingsValidateNotImplemented() *WeaviateThingsValidateNotImpleme
 
 // WriteResponse to the client
 func (o *WeaviateThingsValidateNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(501)
 }

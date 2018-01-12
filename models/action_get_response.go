@@ -22,12 +22,10 @@ import (
 
 // ActionGetResponse action get response
 // swagger:model ActionGetResponse
-
 type ActionGetResponse struct {
 	Action
 
-	// ID of the action.
-	ActionID strfmt.UUID `json:"actionId,omitempty"`
+	ActionGetResponseAllOf1
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -39,14 +37,11 @@ func (m *ActionGetResponse) UnmarshalJSON(raw []byte) error {
 	}
 	m.Action = aO0
 
-	var data struct {
-		ActionID strfmt.UUID `json:"actionId,omitempty"`
-	}
-	if err := swag.ReadJSON(raw, &data); err != nil {
+	var aO1 ActionGetResponseAllOf1
+	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-
-	m.ActionID = data.ActionID
+	m.ActionGetResponseAllOf1 = aO1
 
 	return nil
 }
@@ -61,17 +56,11 @@ func (m ActionGetResponse) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	var data struct {
-		ActionID strfmt.UUID `json:"actionId,omitempty"`
-	}
-
-	data.ActionID = m.ActionID
-
-	jsonData, err := swag.WriteJSON(data)
+	aO1, err := swag.WriteJSON(m.ActionGetResponseAllOf1)
 	if err != nil {
 		return nil, err
 	}
-	_parts = append(_parts, jsonData)
+	_parts = append(_parts, aO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -81,6 +70,10 @@ func (m *ActionGetResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.Action.Validate(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.ActionGetResponseAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

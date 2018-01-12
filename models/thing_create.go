@@ -22,7 +22,6 @@ import (
 
 // ThingCreate thing create
 // swagger:model ThingCreate
-
 type ThingCreate struct {
 
 	// Class of the Thing, defined in the schema.
@@ -34,12 +33,6 @@ type ThingCreate struct {
 	// schema
 	Schema Schema `json:"schema,omitempty"`
 }
-
-/* polymorph ThingCreate @class false */
-
-/* polymorph ThingCreate @context false */
-
-/* polymorph ThingCreate schema false */
 
 // Validate validates this thing create
 func (m *ThingCreate) Validate(formats strfmt.Registry) error {

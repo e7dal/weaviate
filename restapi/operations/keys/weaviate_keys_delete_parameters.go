@@ -36,7 +36,7 @@ func NewWeaviateKeysDeleteParams() WeaviateKeysDeleteParams {
 type WeaviateKeysDeleteParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*Unique ID of the key.
 	  Required: true

@@ -40,13 +40,13 @@ func NewWeaviateThingsPatchParams() WeaviateThingsPatchParams {
 type WeaviateThingsPatchParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*JSONPatch document as defined by RFC 6902.
 	  Required: true
 	  In: body
 	*/
-	Body []*models.PatchDocument
+	Body models.WeaviateThingsPatchParamsBody
 	/*Unique ID of the thing.
 	  Required: true
 	  In: path
@@ -62,7 +62,7 @@ func (o *WeaviateThingsPatchParams) BindRequest(r *http.Request, route *middlewa
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body []*models.PatchDocument
+		var body models.WeaviateThingsPatchParamsBody
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			if err == io.EOF {
 				res = append(res, errors.Required("body", "body"))
@@ -71,12 +71,6 @@ func (o *WeaviateThingsPatchParams) BindRequest(r *http.Request, route *middlewa
 			}
 
 		} else {
-			for _, io := range body {
-				if err := io.Validate(route.Formats); err != nil {
-					res = append(res, err)
-					break
-				}
-			}
 
 			if len(res) == 0 {
 				o.Body = body

@@ -22,14 +22,11 @@ import (
 
 // KeyChildrenGetResponse key children get response
 // swagger:model KeyChildrenGetResponse
-
 type KeyChildrenGetResponse struct {
 
 	// children
 	Children MultipleRef `json:"children"`
 }
-
-/* polymorph KeyChildrenGetResponse children false */
 
 // Validate validates this key children get response
 func (m *KeyChildrenGetResponse) Validate(formats strfmt.Registry) error {

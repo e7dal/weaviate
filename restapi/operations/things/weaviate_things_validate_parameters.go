@@ -38,7 +38,7 @@ func NewWeaviateThingsValidateParams() WeaviateThingsValidateParams {
 type WeaviateThingsValidateParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*
 	  Required: true

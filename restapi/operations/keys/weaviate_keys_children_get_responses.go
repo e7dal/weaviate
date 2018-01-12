@@ -82,6 +82,8 @@ func NewWeaviateKeysChildrenGetUnauthorized() *WeaviateKeysChildrenGetUnauthoriz
 // WriteResponse to the client
 func (o *WeaviateKeysChildrenGetUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(401)
 }
 
@@ -102,6 +104,8 @@ func NewWeaviateKeysChildrenGetForbidden() *WeaviateKeysChildrenGetForbidden {
 
 // WriteResponse to the client
 func (o *WeaviateKeysChildrenGetForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(403)
 }
@@ -124,6 +128,8 @@ func NewWeaviateKeysChildrenGetNotFound() *WeaviateKeysChildrenGetNotFound {
 // WriteResponse to the client
 func (o *WeaviateKeysChildrenGetNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(404)
 }
 
@@ -144,6 +150,8 @@ func NewWeaviateKeysChildrenGetNotImplemented() *WeaviateKeysChildrenGetNotImple
 
 // WriteResponse to the client
 func (o *WeaviateKeysChildrenGetNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(501)
 }

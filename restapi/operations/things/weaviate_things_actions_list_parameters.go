@@ -38,7 +38,7 @@ func NewWeaviateThingsActionsListParams() WeaviateThingsActionsListParams {
 type WeaviateThingsActionsListParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*The maximum number of items to be returned per page.
 	  In: query
@@ -53,6 +53,10 @@ type WeaviateThingsActionsListParams struct {
 	  In: path
 	*/
 	ThingID strfmt.UUID
+	/*Takes a snapshot back in time, in case not set it will show the most recent results.
+	  In: query
+	*/
+	Timesnap *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -75,6 +79,11 @@ func (o *WeaviateThingsActionsListParams) BindRequest(r *http.Request, route *mi
 
 	rThingID, rhkThingID, _ := route.Params.GetOK("thingId")
 	if err := o.bindThingID(rThingID, rhkThingID, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qTimesnap, qhkTimesnap, _ := qs.GetOK("timesnap")
+	if err := o.bindTimesnap(qTimesnap, qhkTimesnap, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -131,6 +140,24 @@ func (o *WeaviateThingsActionsListParams) bindThingID(rawData []string, hasKey b
 		return errors.InvalidType("thingId", "path", "strfmt.UUID", raw)
 	}
 	o.ThingID = *(value.(*strfmt.UUID))
+
+	return nil
+}
+
+func (o *WeaviateThingsActionsListParams) bindTimesnap(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("timesnap", "query", "int64", raw)
+	}
+	o.Timesnap = &value
 
 	return nil
 }

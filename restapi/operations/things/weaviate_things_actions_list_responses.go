@@ -82,6 +82,8 @@ func NewWeaviateThingsActionsListUnauthorized() *WeaviateThingsActionsListUnauth
 // WriteResponse to the client
 func (o *WeaviateThingsActionsListUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(401)
 }
 
@@ -102,6 +104,8 @@ func NewWeaviateThingsActionsListForbidden() *WeaviateThingsActionsListForbidden
 
 // WriteResponse to the client
 func (o *WeaviateThingsActionsListForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(403)
 }
@@ -124,6 +128,8 @@ func NewWeaviateThingsActionsListNotFound() *WeaviateThingsActionsListNotFound {
 // WriteResponse to the client
 func (o *WeaviateThingsActionsListNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(404)
 }
 
@@ -144,6 +150,8 @@ func NewWeaviateThingsActionsListNotImplemented() *WeaviateThingsActionsListNotI
 
 // WriteResponse to the client
 func (o *WeaviateThingsActionsListNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(501)
 }

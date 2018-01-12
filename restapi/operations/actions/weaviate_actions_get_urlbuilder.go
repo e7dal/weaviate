@@ -22,11 +22,14 @@ import (
 	"strings"
 
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // WeaviateActionsGetURL generates an URL for the weaviate actions get operation
 type WeaviateActionsGetURL struct {
 	ActionID strfmt.UUID
+
+	Timesnap *int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -65,6 +68,18 @@ func (o *WeaviateActionsGetURL) Build() (*url.URL, error) {
 		_basePath = "/weaviate/v1"
 	}
 	result.Path = golangswaggerpaths.Join(_basePath, _path)
+
+	qs := make(url.Values)
+
+	var timesnap string
+	if o.Timesnap != nil {
+		timesnap = swag.FormatInt64(*o.Timesnap)
+	}
+	if timesnap != "" {
+		qs.Set("timesnap", timesnap)
+	}
+
+	result.RawQuery = qs.Encode()
 
 	return &result, nil
 }

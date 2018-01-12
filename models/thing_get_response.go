@@ -22,12 +22,10 @@ import (
 
 // ThingGetResponse thing get response
 // swagger:model ThingGetResponse
-
 type ThingGetResponse struct {
 	Thing
 
-	// thing Id
-	ThingID strfmt.UUID `json:"thingId,omitempty"`
+	ThingGetResponseAllOf1
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -39,14 +37,11 @@ func (m *ThingGetResponse) UnmarshalJSON(raw []byte) error {
 	}
 	m.Thing = aO0
 
-	var data struct {
-		ThingID strfmt.UUID `json:"thingId,omitempty"`
-	}
-	if err := swag.ReadJSON(raw, &data); err != nil {
+	var aO1 ThingGetResponseAllOf1
+	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-
-	m.ThingID = data.ThingID
+	m.ThingGetResponseAllOf1 = aO1
 
 	return nil
 }
@@ -61,17 +56,11 @@ func (m ThingGetResponse) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	var data struct {
-		ThingID strfmt.UUID `json:"thingId,omitempty"`
-	}
-
-	data.ThingID = m.ThingID
-
-	jsonData, err := swag.WriteJSON(data)
+	aO1, err := swag.WriteJSON(m.ThingGetResponseAllOf1)
 	if err != nil {
 		return nil, err
 	}
-	_parts = append(_parts, jsonData)
+	_parts = append(_parts, aO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -81,6 +70,10 @@ func (m *ThingGetResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.Thing.Validate(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.ThingGetResponseAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

@@ -82,6 +82,8 @@ func NewWeaviateGraphqlPostUnauthorized() *WeaviateGraphqlPostUnauthorized {
 // WriteResponse to the client
 func (o *WeaviateGraphqlPostUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(401)
 }
 
@@ -102,6 +104,8 @@ func NewWeaviateGraphqlPostForbidden() *WeaviateGraphqlPostForbidden {
 
 // WriteResponse to the client
 func (o *WeaviateGraphqlPostForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(403)
 }
@@ -166,6 +170,8 @@ func NewWeaviateGraphqlPostNotImplemented() *WeaviateGraphqlPostNotImplemented {
 
 // WriteResponse to the client
 func (o *WeaviateGraphqlPostNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(501)
 }

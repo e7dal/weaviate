@@ -22,7 +22,6 @@ import (
 
 // KeyCreate key create
 // swagger:model KeyCreate
-
 type KeyCreate struct {
 
 	// Is user allowed to delete.
@@ -46,20 +45,6 @@ type KeyCreate struct {
 	// Is user allowed to write.
 	Write bool `json:"write,omitempty"`
 }
-
-/* polymorph KeyCreate delete false */
-
-/* polymorph KeyCreate email false */
-
-/* polymorph KeyCreate execute false */
-
-/* polymorph KeyCreate ipOrigin false */
-
-/* polymorph KeyCreate keyExpiresUnix false */
-
-/* polymorph KeyCreate read false */
-
-/* polymorph KeyCreate write false */
 
 // Validate validates this key create
 func (m *KeyCreate) Validate(formats strfmt.Registry) error {

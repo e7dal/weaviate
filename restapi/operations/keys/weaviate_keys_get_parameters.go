@@ -36,7 +36,7 @@ func NewWeaviateKeysGetParams() WeaviateKeysGetParams {
 type WeaviateKeysGetParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*Unique ID of the key.
 	  Required: true

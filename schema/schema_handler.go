@@ -70,6 +70,7 @@ const (
 
 // GetClassByName returns the class by its name
 func GetClassByName(s *models.SemanticSchema, className string) (*models.SemanticSchemaClass, error) {
+
 	// For each class
 	for _, class := range s.Classes {
 
@@ -254,6 +255,7 @@ func (f *WeaviateSchema) validateSchema(schema *models.SemanticSchema) error {
 	// Loop through all classes
 	for _, class := range schema.Classes {
 		// Loop through all properties
+
 		for _, prop := range class.Properties {
 			// Init the inner loop variables
 			// HasCref means that the value starts with a capital, so it is a cross-reference

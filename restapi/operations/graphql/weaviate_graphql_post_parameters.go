@@ -20,6 +20,9 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/swag"
+
+	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/creativesoftwarefdn/weaviate/models"
 )
@@ -38,13 +41,17 @@ func NewWeaviateGraphqlPostParams() WeaviateGraphqlPostParams {
 type WeaviateGraphqlPostParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*The GraphQL query request parameters.
 	  Required: true
 	  In: body
 	*/
 	Body *models.GraphQLQuery
+	/*Takes a snapshot back in time, in case not set it will show the most recent results.
+	  In: query
+	*/
+	Timesnap *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -52,6 +59,8 @@ type WeaviateGraphqlPostParams struct {
 func (o *WeaviateGraphqlPostParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 	o.HTTPRequest = r
+
+	qs := runtime.Values(r.URL.Query())
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
@@ -77,8 +86,31 @@ func (o *WeaviateGraphqlPostParams) BindRequest(r *http.Request, route *middlewa
 		res = append(res, errors.Required("body", "body"))
 	}
 
+	qTimesnap, qhkTimesnap, _ := qs.GetOK("timesnap")
+	if err := o.bindTimesnap(qTimesnap, qhkTimesnap, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (o *WeaviateGraphqlPostParams) bindTimesnap(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("timesnap", "query", "int64", raw)
+	}
+	o.Timesnap = &value
+
 	return nil
 }

@@ -25,7 +25,6 @@ import (
 
 // SingleRef single ref
 // swagger:model SingleRef
-
 type SingleRef struct {
 
 	// Location of the cross reference.
@@ -37,12 +36,6 @@ type SingleRef struct {
 	// Type should be Thing, Action or Key
 	Type string `json:"type,omitempty"`
 }
-
-/* polymorph SingleRef $cref false */
-
-/* polymorph SingleRef locationUrl false */
-
-/* polymorph SingleRef type false */
 
 // Validate validates this single ref
 func (m *SingleRef) Validate(formats strfmt.Registry) error {

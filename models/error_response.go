@@ -22,14 +22,11 @@ import (
 
 // ErrorResponse An error response given by Weaviate end-points.
 // swagger:model ErrorResponse
-
 type ErrorResponse struct {
 
 	// error
 	Error *ErrorResponseError `json:"error,omitempty"`
 }
-
-/* polymorph ErrorResponse error false */
 
 // Validate validates this error response
 func (m *ErrorResponse) Validate(formats strfmt.Registry) error {
@@ -76,45 +73,6 @@ func (m *ErrorResponse) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *ErrorResponse) UnmarshalBinary(b []byte) error {
 	var res ErrorResponse
-	if err := swag.ReadJSON(b, &res); err != nil {
-		return err
-	}
-	*m = res
-	return nil
-}
-
-// ErrorResponseError error response error
-// swagger:model ErrorResponseError
-
-type ErrorResponseError struct {
-
-	// message
-	Message string `json:"message,omitempty"`
-}
-
-/* polymorph ErrorResponseError message false */
-
-// Validate validates this error response error
-func (m *ErrorResponseError) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-// MarshalBinary interface implementation
-func (m *ErrorResponseError) MarshalBinary() ([]byte, error) {
-	if m == nil {
-		return nil, nil
-	}
-	return swag.WriteJSON(m)
-}
-
-// UnmarshalBinary interface implementation
-func (m *ErrorResponseError) UnmarshalBinary(b []byte) error {
-	var res ErrorResponseError
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

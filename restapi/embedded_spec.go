@@ -53,7 +53,7 @@ func init() {
       "url": "https://weaviate.com",
       "email": "yourfriends@weaviate.com"
     },
-    "version": "v0.7.0"
+    "version": "0.7.1"
   },
   "basePath": "/weaviate/v1",
   "paths": {
@@ -158,6 +158,9 @@ func init() {
             "name": "actionId",
             "in": "path",
             "required": true
+          },
+          {
+            "$ref": "#/parameters/CommonTimeSnapParameterQuery"
           }
         ],
         "responses": {
@@ -296,6 +299,9 @@ func init() {
             "schema": {
               "$ref": "#/definitions/GraphQLQuery"
             }
+          },
+          {
+            "$ref": "#/parameters/CommonTimeSnapParameterQuery"
           }
         ],
         "responses": {
@@ -581,6 +587,9 @@ func init() {
           },
           {
             "$ref": "#/parameters/CommonPageParameterQuery"
+          },
+          {
+            "$ref": "#/parameters/CommonTimeSnapParameterQuery"
           }
         ],
         "responses": {
@@ -705,6 +714,9 @@ func init() {
             "name": "thingId",
             "in": "path",
             "required": true
+          },
+          {
+            "$ref": "#/parameters/CommonTimeSnapParameterQuery"
           }
         ],
         "responses": {
@@ -901,6 +913,9 @@ func init() {
           },
           {
             "$ref": "#/parameters/CommonPageParameterQuery"
+          },
+          {
+            "$ref": "#/parameters/CommonTimeSnapParameterQuery"
           }
         ],
         "responses": {
@@ -1465,6 +1480,13 @@ func init() {
       "format": "int64",
       "description": "The page number of the items to be returned.",
       "name": "page",
+      "in": "query"
+    },
+    "CommonTimeSnapParameterQuery": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Takes a snapshot back in time, in case not set it will show the most recent results.",
+      "name": "timesnap",
       "in": "query"
     }
   },

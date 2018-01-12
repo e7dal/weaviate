@@ -38,7 +38,7 @@ func NewWeaviateKeyCreateParams() WeaviateKeyCreateParams {
 type WeaviateKeyCreateParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*
 	  Required: true

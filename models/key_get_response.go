@@ -22,12 +22,10 @@ import (
 
 // KeyGetResponse key get response
 // swagger:model KeyGetResponse
-
 type KeyGetResponse struct {
 	Key
 
-	// Id of the key.
-	KeyID strfmt.UUID `json:"keyId,omitempty"`
+	KeyGetResponseAllOf1
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -39,14 +37,11 @@ func (m *KeyGetResponse) UnmarshalJSON(raw []byte) error {
 	}
 	m.Key = aO0
 
-	var data struct {
-		KeyID strfmt.UUID `json:"keyId,omitempty"`
-	}
-	if err := swag.ReadJSON(raw, &data); err != nil {
+	var aO1 KeyGetResponseAllOf1
+	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-
-	m.KeyID = data.KeyID
+	m.KeyGetResponseAllOf1 = aO1
 
 	return nil
 }
@@ -61,17 +56,11 @@ func (m KeyGetResponse) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	var data struct {
-		KeyID strfmt.UUID `json:"keyId,omitempty"`
-	}
-
-	data.KeyID = m.KeyID
-
-	jsonData, err := swag.WriteJSON(data)
+	aO1, err := swag.WriteJSON(m.KeyGetResponseAllOf1)
 	if err != nil {
 		return nil, err
 	}
-	_parts = append(_parts, jsonData)
+	_parts = append(_parts, aO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -81,6 +70,10 @@ func (m *KeyGetResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.Key.Validate(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.KeyGetResponseAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

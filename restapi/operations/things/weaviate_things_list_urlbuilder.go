@@ -27,6 +27,7 @@ import (
 type WeaviateThingsListURL struct {
 	MaxResults *int64
 	Page       *int64
+	Timesnap   *int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -76,6 +77,14 @@ func (o *WeaviateThingsListURL) Build() (*url.URL, error) {
 	}
 	if page != "" {
 		qs.Set("page", page)
+	}
+
+	var timesnap string
+	if o.Timesnap != nil {
+		timesnap = swag.FormatInt64(*o.Timesnap)
+	}
+	if timesnap != "" {
+		qs.Set("timesnap", timesnap)
 	}
 
 	result.RawQuery = qs.Encode()

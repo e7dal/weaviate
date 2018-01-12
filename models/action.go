@@ -22,18 +22,10 @@ import (
 
 // Action action
 // swagger:model Action
-
 type Action struct {
 	ActionCreate
 
-	// Timestamp of creation of this action in milliseconds since epoch UTC.
-	CreationTimeUnix int64 `json:"creationTimeUnix,omitempty"`
-
-	// key
-	Key *SingleRef `json:"key,omitempty"`
-
-	// Timestamp since epoch of last update made to the action.
-	LastUpdateTimeUnix int64 `json:"lastUpdateTimeUnix,omitempty"`
+	ActionAllOf1
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -45,22 +37,11 @@ func (m *Action) UnmarshalJSON(raw []byte) error {
 	}
 	m.ActionCreate = aO0
 
-	var data struct {
-		CreationTimeUnix int64 `json:"creationTimeUnix,omitempty"`
-
-		Key *SingleRef `json:"key,omitempty"`
-
-		LastUpdateTimeUnix int64 `json:"lastUpdateTimeUnix,omitempty"`
-	}
-	if err := swag.ReadJSON(raw, &data); err != nil {
+	var aO1 ActionAllOf1
+	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-
-	m.CreationTimeUnix = data.CreationTimeUnix
-
-	m.Key = data.Key
-
-	m.LastUpdateTimeUnix = data.LastUpdateTimeUnix
+	m.ActionAllOf1 = aO1
 
 	return nil
 }
@@ -75,25 +56,11 @@ func (m Action) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	var data struct {
-		CreationTimeUnix int64 `json:"creationTimeUnix,omitempty"`
-
-		Key *SingleRef `json:"key,omitempty"`
-
-		LastUpdateTimeUnix int64 `json:"lastUpdateTimeUnix,omitempty"`
-	}
-
-	data.CreationTimeUnix = m.CreationTimeUnix
-
-	data.Key = m.Key
-
-	data.LastUpdateTimeUnix = m.LastUpdateTimeUnix
-
-	jsonData, err := swag.WriteJSON(data)
+	aO1, err := swag.WriteJSON(m.ActionAllOf1)
 	if err != nil {
 		return nil, err
 	}
-	_parts = append(_parts, jsonData)
+	_parts = append(_parts, aO1)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -106,32 +73,13 @@ func (m *Action) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateKey(formats); err != nil {
+	if err := m.ActionAllOf1.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Action) validateKey(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Key) { // not required
-		return nil
-	}
-
-	if m.Key != nil {
-
-		if err := m.Key.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("key")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 

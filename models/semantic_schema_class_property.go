@@ -22,7 +22,6 @@ import (
 
 // SemanticSchemaClassProperty semantic schema class property
 // swagger:model SemanticSchemaClassProperty
-
 type SemanticSchemaClassProperty struct {
 
 	// Can be a reference ($cref) to another type when starts with a capital (for example Person) otherwise "string" or "int".
@@ -34,12 +33,6 @@ type SemanticSchemaClassProperty struct {
 	// Name of the property as URI relative to the schema URL.
 	Name string `json:"name,omitempty"`
 }
-
-/* polymorph SemanticSchemaClassProperty @dataType false */
-
-/* polymorph SemanticSchemaClassProperty description false */
-
-/* polymorph SemanticSchemaClassProperty name false */
 
 // Validate validates this semantic schema class property
 func (m *SemanticSchemaClassProperty) Validate(formats strfmt.Registry) error {

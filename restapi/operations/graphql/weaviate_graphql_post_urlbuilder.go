@@ -19,11 +19,17 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+
+	"github.com/go-openapi/swag"
 )
 
 // WeaviateGraphqlPostURL generates an URL for the weaviate graphql post operation
 type WeaviateGraphqlPostURL struct {
+	Timesnap *int64
+
 	_basePath string
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
@@ -52,6 +58,18 @@ func (o *WeaviateGraphqlPostURL) Build() (*url.URL, error) {
 		_basePath = "/weaviate/v1"
 	}
 	result.Path = golangswaggerpaths.Join(_basePath, _path)
+
+	qs := make(url.Values)
+
+	var timesnap string
+	if o.Timesnap != nil {
+		timesnap = swag.FormatInt64(*o.Timesnap)
+	}
+	if timesnap != "" {
+		qs.Set("timesnap", timesnap)
+	}
+
+	result.RawQuery = qs.Encode()
 
 	return &result, nil
 }

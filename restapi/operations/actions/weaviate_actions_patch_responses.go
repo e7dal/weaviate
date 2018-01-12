@@ -82,6 +82,8 @@ func NewWeaviateActionsPatchBadRequest() *WeaviateActionsPatchBadRequest {
 // WriteResponse to the client
 func (o *WeaviateActionsPatchBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(400)
 }
 
@@ -102,6 +104,8 @@ func NewWeaviateActionsPatchUnauthorized() *WeaviateActionsPatchUnauthorized {
 
 // WriteResponse to the client
 func (o *WeaviateActionsPatchUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(401)
 }
@@ -124,6 +128,8 @@ func NewWeaviateActionsPatchForbidden() *WeaviateActionsPatchForbidden {
 // WriteResponse to the client
 func (o *WeaviateActionsPatchForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(403)
 }
 
@@ -144,6 +150,8 @@ func NewWeaviateActionsPatchNotFound() *WeaviateActionsPatchNotFound {
 
 // WriteResponse to the client
 func (o *WeaviateActionsPatchNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(404)
 }
@@ -208,6 +216,8 @@ func NewWeaviateActionsPatchNotImplemented() *WeaviateActionsPatchNotImplemented
 
 // WriteResponse to the client
 func (o *WeaviateActionsPatchNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(501)
 }

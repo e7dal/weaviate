@@ -40,7 +40,7 @@ func NewWeaviateActionsPatchParams() WeaviateActionsPatchParams {
 type WeaviateActionsPatchParams struct {
 
 	// HTTP Request Object
-	HTTPRequest *http.Request
+	HTTPRequest *http.Request `json:"-"`
 
 	/*Unique ID of the action.
 	  Required: true
@@ -51,7 +51,7 @@ type WeaviateActionsPatchParams struct {
 	  Required: true
 	  In: body
 	*/
-	Body []*models.PatchDocument
+	Body models.WeaviateActionsPatchParamsBody
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -67,7 +67,7 @@ func (o *WeaviateActionsPatchParams) BindRequest(r *http.Request, route *middlew
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body []*models.PatchDocument
+		var body models.WeaviateActionsPatchParamsBody
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			if err == io.EOF {
 				res = append(res, errors.Required("body", "body"))
@@ -76,12 +76,6 @@ func (o *WeaviateActionsPatchParams) BindRequest(r *http.Request, route *middlew
 			}
 
 		} else {
-			for _, io := range body {
-				if err := io.Validate(route.Formats); err != nil {
-					res = append(res, err)
-					break
-				}
-			}
 
 			if len(res) == 0 {
 				o.Body = body

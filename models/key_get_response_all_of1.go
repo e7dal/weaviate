@@ -20,29 +20,16 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// GraphQLQuery GraphQL query based on: http://facebook.github.io/graphql/
-// swagger:model GraphQLQuery
+// KeyGetResponseAllOf1 key get response all of1
+// swagger:model keyGetResponseAllOf1
+type KeyGetResponseAllOf1 struct {
 
-type GraphQLQuery struct {
-
-	// Name of the operation if multiple exist in query.
-	OperationName string `json:"operationName,omitempty"`
-
-	// Query based on GraphQL syntax
-	Query string `json:"query,omitempty"`
-
-	// Additional variables for the query.
-	Variables interface{} `json:"variables,omitempty"`
+	// Id of the key.
+	KeyID strfmt.UUID `json:"keyId,omitempty"`
 }
 
-/* polymorph GraphQLQuery operationName false */
-
-/* polymorph GraphQLQuery query false */
-
-/* polymorph GraphQLQuery variables false */
-
-// Validate validates this graph q l query
-func (m *GraphQLQuery) Validate(formats strfmt.Registry) error {
+// Validate validates this key get response all of1
+func (m *KeyGetResponseAllOf1) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if len(res) > 0 {
@@ -52,7 +39,7 @@ func (m *GraphQLQuery) Validate(formats strfmt.Registry) error {
 }
 
 // MarshalBinary interface implementation
-func (m *GraphQLQuery) MarshalBinary() ([]byte, error) {
+func (m *KeyGetResponseAllOf1) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -60,8 +47,8 @@ func (m *GraphQLQuery) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *GraphQLQuery) UnmarshalBinary(b []byte) error {
-	var res GraphQLQuery
+func (m *KeyGetResponseAllOf1) UnmarshalBinary(b []byte) error {
+	var res KeyGetResponseAllOf1
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}
