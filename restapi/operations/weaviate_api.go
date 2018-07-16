@@ -23,7 +23,6 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 	security "github.com/go-openapi/runtime/security"
-	"github.com/go-openapi/runtime/yamlpc"
 	spec "github.com/go-openapi/spec"
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -32,36 +31,25 @@ import (
 	"github.com/creativesoftwarefdn/weaviate/restapi/operations/graphql"
 	"github.com/creativesoftwarefdn/weaviate/restapi/operations/keys"
 	"github.com/creativesoftwarefdn/weaviate/restapi/operations/meta"
+	"github.com/creativesoftwarefdn/weaviate/restapi/operations/p2_p"
 	"github.com/creativesoftwarefdn/weaviate/restapi/operations/things"
 )
 
 // NewWeaviateAPI creates a new Weaviate instance
 func NewWeaviateAPI(spec *loads.Document) *WeaviateAPI {
 	return &WeaviateAPI{
-		handlers:              make(map[string]map[string]http.Handler),
-		formats:               strfmt.Default,
-		defaultConsumes:       "application/json",
-		defaultProduces:       "application/json",
-		ServerShutdown:        func() {},
-		spec:                  spec,
-		ServeError:            errors.ServeError,
-		BasicAuthenticator:    security.BasicAuth,
-		APIKeyAuthenticator:   security.APIKeyAuth,
-		BearerAuthenticator:   security.BearerAuth,
-		JSONConsumer:          runtime.JSONConsumer(),
-		BinConsumer:           runtime.ByteStreamConsumer(),
-		UrlformConsumer:       runtime.DiscardConsumer,
-		YamlConsumer:          yamlpc.YAMLConsumer(),
-		XMLConsumer:           runtime.XMLConsumer(),
-		MultipartformConsumer: runtime.DiscardConsumer,
-		TxtConsumer:           runtime.TextConsumer(),
-		JSONProducer:          runtime.JSONProducer(),
-		BinProducer:           runtime.ByteStreamProducer(),
-		UrlformProducer:       runtime.DiscardProducer,
-		YamlProducer:          yamlpc.YAMLProducer(),
-		XMLProducer:           runtime.XMLProducer(),
-		MultipartformProducer: runtime.DiscardProducer,
-		TxtProducer:           runtime.TextProducer(),
+		handlers:            make(map[string]map[string]http.Handler),
+		formats:             strfmt.Default,
+		defaultConsumes:     "application/json",
+		defaultProduces:     "application/json",
+		ServerShutdown:      func() {},
+		spec:                spec,
+		ServeError:          errors.ServeError,
+		BasicAuthenticator:  security.BasicAuth,
+		APIKeyAuthenticator: security.APIKeyAuth,
+		BearerAuthenticator: security.BearerAuth,
+		JSONConsumer:        runtime.JSONConsumer(),
+		JSONProducer:        runtime.JSONProducer(),
 		ActionsWeaviateActionHistoryGetHandler: actions.WeaviateActionHistoryGetHandlerFunc(func(params actions.WeaviateActionHistoryGetParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation ActionsWeaviateActionHistoryGet has not yet been implemented")
 		}),
@@ -109,6 +97,18 @@ func NewWeaviateAPI(spec *loads.Document) *WeaviateAPI {
 		}),
 		MetaWeaviateMetaGetHandler: meta.WeaviateMetaGetHandlerFunc(func(params meta.WeaviateMetaGetParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation MetaWeaviateMetaGet has not yet been implemented")
+		}),
+		P2PWeaviatePeersAnnounceHandler: p2_p.WeaviatePeersAnnounceHandlerFunc(func(params p2_p.WeaviatePeersAnnounceParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation P2PWeaviatePeersAnnounce has not yet been implemented")
+		}),
+		P2PWeaviatePeersAnswersCreateHandler: p2_p.WeaviatePeersAnswersCreateHandlerFunc(func(params p2_p.WeaviatePeersAnswersCreateParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation P2PWeaviatePeersAnswersCreate has not yet been implemented")
+		}),
+		P2PWeaviatePeersEchoHandler: p2_p.WeaviatePeersEchoHandlerFunc(func(params p2_p.WeaviatePeersEchoParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation P2PWeaviatePeersEcho has not yet been implemented")
+		}),
+		P2PWeaviatePeersQuestionsCreateHandler: p2_p.WeaviatePeersQuestionsCreateHandlerFunc(func(params p2_p.WeaviatePeersQuestionsCreateParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation P2PWeaviatePeersQuestionsCreate has not yet been implemented")
 		}),
 		ThingsWeaviateThingHistoryGetHandler: things.WeaviateThingHistoryGetHandlerFunc(func(params things.WeaviateThingHistoryGetParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation ThingsWeaviateThingHistoryGet has not yet been implemented")
@@ -172,35 +172,11 @@ type WeaviateAPI struct {
 	// It has a default implemention in the security package, however you can replace it for your particular usage.
 	BearerAuthenticator func(string, security.ScopedTokenAuthentication) runtime.Authenticator
 
-	// JSONConsumer registers a consumer for a "application/json-patch+json" mime type
+	// JSONConsumer registers a consumer for a "application/json" mime type
 	JSONConsumer runtime.Consumer
-	// BinConsumer registers a consumer for a "application/octet-stream" mime type
-	BinConsumer runtime.Consumer
-	// UrlformConsumer registers a consumer for a "application/x-www-form-urlencoded" mime type
-	UrlformConsumer runtime.Consumer
-	// YamlConsumer registers a consumer for a "application/x-yaml" mime type
-	YamlConsumer runtime.Consumer
-	// XMLConsumer registers a consumer for a "application/xml" mime type
-	XMLConsumer runtime.Consumer
-	// MultipartformConsumer registers a consumer for a "multipart/form-data" mime type
-	MultipartformConsumer runtime.Consumer
-	// TxtConsumer registers a consumer for a "text/plain" mime type
-	TxtConsumer runtime.Consumer
 
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
-	// BinProducer registers a producer for a "application/octet-stream" mime type
-	BinProducer runtime.Producer
-	// UrlformProducer registers a producer for a "application/x-www-form-urlencoded" mime type
-	UrlformProducer runtime.Producer
-	// YamlProducer registers a producer for a "application/x-yaml" mime type
-	YamlProducer runtime.Producer
-	// XMLProducer registers a producer for a "application/xml" mime type
-	XMLProducer runtime.Producer
-	// MultipartformProducer registers a producer for a "multipart/form-data" mime type
-	MultipartformProducer runtime.Producer
-	// TxtProducer registers a producer for a "text/plain" mime type
-	TxtProducer runtime.Producer
 
 	// APIKeyAuth registers a function that takes a token and returns a principal
 	// it performs authentication based on an api key X-API-KEY provided in the header
@@ -245,6 +221,14 @@ type WeaviateAPI struct {
 	KeysWeaviateKeysRenewTokenHandler keys.WeaviateKeysRenewTokenHandler
 	// MetaWeaviateMetaGetHandler sets the operation handler for the weaviate meta get operation
 	MetaWeaviateMetaGetHandler meta.WeaviateMetaGetHandler
+	// P2PWeaviatePeersAnnounceHandler sets the operation handler for the weaviate peers announce operation
+	P2PWeaviatePeersAnnounceHandler p2_p.WeaviatePeersAnnounceHandler
+	// P2PWeaviatePeersAnswersCreateHandler sets the operation handler for the weaviate peers answers create operation
+	P2PWeaviatePeersAnswersCreateHandler p2_p.WeaviatePeersAnswersCreateHandler
+	// P2PWeaviatePeersEchoHandler sets the operation handler for the weaviate peers echo operation
+	P2PWeaviatePeersEchoHandler p2_p.WeaviatePeersEchoHandler
+	// P2PWeaviatePeersQuestionsCreateHandler sets the operation handler for the weaviate peers questions create operation
+	P2PWeaviatePeersQuestionsCreateHandler p2_p.WeaviatePeersQuestionsCreateHandler
 	// ThingsWeaviateThingHistoryGetHandler sets the operation handler for the weaviate thing history get operation
 	ThingsWeaviateThingHistoryGetHandler things.WeaviateThingHistoryGetHandler
 	// ThingsWeaviateThingsActionsListHandler sets the operation handler for the weaviate things actions list operation
@@ -322,56 +306,8 @@ func (o *WeaviateAPI) Validate() error {
 		unregistered = append(unregistered, "JSONConsumer")
 	}
 
-	if o.BinConsumer == nil {
-		unregistered = append(unregistered, "BinConsumer")
-	}
-
-	if o.UrlformConsumer == nil {
-		unregistered = append(unregistered, "UrlformConsumer")
-	}
-
-	if o.YamlConsumer == nil {
-		unregistered = append(unregistered, "YamlConsumer")
-	}
-
-	if o.XMLConsumer == nil {
-		unregistered = append(unregistered, "XMLConsumer")
-	}
-
-	if o.MultipartformConsumer == nil {
-		unregistered = append(unregistered, "MultipartformConsumer")
-	}
-
-	if o.TxtConsumer == nil {
-		unregistered = append(unregistered, "TxtConsumer")
-	}
-
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
-	}
-
-	if o.BinProducer == nil {
-		unregistered = append(unregistered, "BinProducer")
-	}
-
-	if o.UrlformProducer == nil {
-		unregistered = append(unregistered, "UrlformProducer")
-	}
-
-	if o.YamlProducer == nil {
-		unregistered = append(unregistered, "YamlProducer")
-	}
-
-	if o.XMLProducer == nil {
-		unregistered = append(unregistered, "XMLProducer")
-	}
-
-	if o.MultipartformProducer == nil {
-		unregistered = append(unregistered, "MultipartformProducer")
-	}
-
-	if o.TxtProducer == nil {
-		unregistered = append(unregistered, "TxtProducer")
 	}
 
 	if o.APIKeyAuth == nil {
@@ -444,6 +380,22 @@ func (o *WeaviateAPI) Validate() error {
 
 	if o.MetaWeaviateMetaGetHandler == nil {
 		unregistered = append(unregistered, "meta.WeaviateMetaGetHandler")
+	}
+
+	if o.P2PWeaviatePeersAnnounceHandler == nil {
+		unregistered = append(unregistered, "p2_p.WeaviatePeersAnnounceHandler")
+	}
+
+	if o.P2PWeaviatePeersAnswersCreateHandler == nil {
+		unregistered = append(unregistered, "p2_p.WeaviatePeersAnswersCreateHandler")
+	}
+
+	if o.P2PWeaviatePeersEchoHandler == nil {
+		unregistered = append(unregistered, "p2_p.WeaviatePeersEchoHandler")
+	}
+
+	if o.P2PWeaviatePeersQuestionsCreateHandler == nil {
+		unregistered = append(unregistered, "p2_p.WeaviatePeersQuestionsCreateHandler")
 	}
 
 	if o.ThingsWeaviateThingHistoryGetHandler == nil {
@@ -532,27 +484,6 @@ func (o *WeaviateAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consu
 		case "application/json":
 			result["application/json"] = o.JSONConsumer
 
-		case "application/json-patch+json":
-			result["application/json-patch+json"] = o.JSONConsumer
-
-		case "application/octet-stream":
-			result["application/octet-stream"] = o.BinConsumer
-
-		case "application/x-www-form-urlencoded":
-			result["application/x-www-form-urlencoded"] = o.UrlformConsumer
-
-		case "application/x-yaml":
-			result["application/x-yaml"] = o.YamlConsumer
-
-		case "application/xml":
-			result["application/xml"] = o.XMLConsumer
-
-		case "multipart/form-data":
-			result["multipart/form-data"] = o.MultipartformConsumer
-
-		case "text/plain":
-			result["text/plain"] = o.TxtConsumer
-
 		}
 	}
 	return result
@@ -568,24 +499,6 @@ func (o *WeaviateAPI) ProducersFor(mediaTypes []string) map[string]runtime.Produ
 
 		case "application/json":
 			result["application/json"] = o.JSONProducer
-
-		case "application/octet-stream":
-			result["application/octet-stream"] = o.BinProducer
-
-		case "application/x-www-form-urlencoded":
-			result["application/x-www-form-urlencoded"] = o.UrlformProducer
-
-		case "application/x-yaml":
-			result["application/x-yaml"] = o.YamlProducer
-
-		case "application/xml":
-			result["application/xml"] = o.XMLProducer
-
-		case "multipart/form-data":
-			result["multipart/form-data"] = o.MultipartformProducer
-
-		case "text/plain":
-			result["text/plain"] = o.TxtProducer
 
 		}
 	}
@@ -704,6 +617,26 @@ func (o *WeaviateAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/meta"] = meta.NewWeaviateMetaGet(o.context, o.MetaWeaviateMetaGetHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/peers"] = p2_p.NewWeaviatePeersAnnounce(o.context, o.P2PWeaviatePeersAnnounceHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/peers/answers/{answerId}"] = p2_p.NewWeaviatePeersAnswersCreate(o.context, o.P2PWeaviatePeersAnswersCreateHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/peers/echo"] = p2_p.NewWeaviatePeersEcho(o.context, o.P2PWeaviatePeersEchoHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/peers/questions"] = p2_p.NewWeaviatePeersQuestionsCreate(o.context, o.P2PWeaviatePeersQuestionsCreateHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

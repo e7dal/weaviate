@@ -29,6 +29,8 @@ before_script:
   - sudo apt-get -qq -y update
   - sudo apt-get -qq -y install jq coreutils
 script: 
+  # Run unit-like tests
+  - go test ./contextionary
   # Running Cassandra deamon
   - docker run -it --name weaviate_db_1_travis -e CASSANDRA_BROADCAST_ADDRESS=127.0.0.1 -p 7000:7000 -p 9042:9042 -v ~/cassandra:/var/lib/cassandra -d cassandra:3
   - sleep 45
@@ -42,7 +44,7 @@ script:
   - CASSANDRAIP=$(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' weaviate_db_1_travis)
   - ROOTTOKEN=$(cat nohup.out | grep -s ROOTTOKEN|sed 's/.*ROOTTOKEN=//')
   - ROOTKEY=$(cat nohup.out | grep -s ROOTKEY|sed 's/.*ROOTKEY=//')
-  # Run the tests
+  # Run the integration tests
   - |
       # On error, quit
       set -e
@@ -50,7 +52,13 @@ script:
       go test -v ./test -args -api-key=${ROOTKEY} -api-token=${ROOTTOKEN} -server-host=127.0.0.1 -server-port=8080 -server-scheme=http
   # Install goreleaser and create build dirs
   - |
+      # If the branch is not master or develop we are done :-)
+      if [ $TRAVIS_BRANCH -ne "master" ] && [ $TRAVIS_BRANCH -ne "develop" ]; then
+        travis_terminate 0
+      fi
       if [ $TRAVIS_PULL_REQUEST = "false" ]; then
+          # Make distribution dir if not exsists
+          mkdir -p releases
           # Get latest goreleaser
           curl -s -L -o "goreleaser.tar.gz" "https://github.com/goreleaser/goreleaser/releases/download/v0.58.0/goreleaser_$(uname -s)_$(uname -m).tar.gz"
           tar -xzf goreleaser.tar.gz
@@ -58,20 +66,24 @@ script:
           rm goreleaser goreleaser.tar.gz
           # if master, upload version nr otherwise nightly
           if [ $TRAVIS_BRANCH = "master" ]; then
-              # If the folder exsists, it will fail
-              if [ -e $(cat swagger/weaviate-swagger.json | jq '.info.version') ]
-              then
-                  # fail the script, can't overwrite an old version
-                  echo "Fail, can't overwrite an old version. Update the version in the Swagger file."
+              # create folder with releases for master
+              mv dist releases/$(cat OpenAPI-Specification/schema.json | jq -r '.info.version')
+              # Create txt file with version number
+              echo $(cat OpenAPI-Specification/schema.json | jq -r '.info.version') > releases/latest.master.txt
+              # Check if the version number is now, if not, kill and fail the process
+              if [[ `wget -S --spider https://storage.googleapis.com/weaviate-dist/releases/$(cat OpenAPI-Specification/schema.json | jq -r '.info.version')/config.yaml 2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
+                  echo "ERROR - This version is already released, master build will fail! Increate version number in OPENAPI schema file"
                   exit 1
               fi
-              mv dist $(cat swagger/weaviate-swagger.json | jq '.info.version')
-              rm -r !($(cat swagger/weaviate-swagger.json | jq '.info.version'))
-          else
-              # if master, upload version nr
-              mv dist nightly
-              rm -r !(nightly)
           fi
+          if [ $TRAVIS_BRANCH = "develop" ]; then
+              # if develop, create nightly
+              mv dist releases/nightly
+              # Create txt file with version number of nightly build
+              echo $(cat OpenAPI-Specification/schema.json | jq -r '.info.version') > releases/latest.nightly.txt
+          fi
+          # remove all except for releases
+          rm -r !(releases)
       fi
 services: 
   - docker

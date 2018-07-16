@@ -28,12 +28,12 @@ import (
 
 	"github.com/creativesoftwarefdn/weaviate/restapi/operations/graphql"
 	"github.com/creativesoftwarefdn/weaviate/restapi/operations/meta"
+	"github.com/creativesoftwarefdn/weaviate/restapi/operations/p2_p"
 
 	jsonpatch "github.com/evanphx/json-patch"
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
-	"github.com/go-openapi/runtime/yamlpc"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	gographql "github.com/graphql-go/graphql"
@@ -272,32 +272,6 @@ func configureAPI(api *operations.WeaviateAPI) http.Handler {
 	api.ServeError = errors.ServeError
 
 	api.JSONConsumer = runtime.JSONConsumer()
-
-	api.BinConsumer = runtime.ByteStreamConsumer()
-
-	api.UrlformConsumer = runtime.DiscardConsumer
-
-	api.YamlConsumer = yamlpc.YAMLConsumer()
-
-	api.XMLConsumer = runtime.XMLConsumer()
-
-	api.MultipartformConsumer = runtime.DiscardConsumer
-
-	api.TxtConsumer = runtime.TextConsumer()
-
-	api.JSONProducer = runtime.JSONProducer()
-
-	api.BinProducer = runtime.ByteStreamProducer()
-
-	api.UrlformProducer = runtime.DiscardProducer
-
-	api.YamlProducer = yamlpc.YAMLProducer()
-
-	api.XMLProducer = runtime.XMLProducer()
-
-	api.MultipartformProducer = runtime.DiscardProducer
-
-	api.TxtProducer = runtime.TextProducer()
 
 	/*
 	 * HANDLE X-API-KEY
@@ -1175,6 +1149,18 @@ func configureAPI(api *operations.WeaviateAPI) http.Handler {
 		metaResponse.ThingsSchema = databaseSchema.ThingSchema.Schema
 
 		return meta.NewWeaviateMetaGetOK().WithPayload(metaResponse)
+	})
+	api.P2PWeaviatePeersAnnounceHandler = p2_p.WeaviatePeersAnnounceHandlerFunc(func(params p2_p.WeaviatePeersAnnounceParams, principal interface{}) middleware.Responder {
+		return middleware.NotImplemented("operation p2_p.WeaviatePeersAnnounce has not yet been implemented")
+	})
+	api.P2PWeaviatePeersAnswersCreateHandler = p2_p.WeaviatePeersAnswersCreateHandlerFunc(func(params p2_p.WeaviatePeersAnswersCreateParams, principal interface{}) middleware.Responder {
+		return middleware.NotImplemented("operation p2_p.WeaviatePeersAnswersCreate has not yet been implemented")
+	})
+	api.P2PWeaviatePeersEchoHandler = p2_p.WeaviatePeersEchoHandlerFunc(func(params p2_p.WeaviatePeersEchoParams, principal interface{}) middleware.Responder {
+		return middleware.NotImplemented("operation p2_p.WeaviatePeersEcho has not yet been implemented")
+	})
+	api.P2PWeaviatePeersQuestionsCreateHandler = p2_p.WeaviatePeersQuestionsCreateHandlerFunc(func(params p2_p.WeaviatePeersQuestionsCreateParams, principal interface{}) middleware.Responder {
+		return middleware.NotImplemented("operation p2_p.WeaviatePeersQuestionsCreate has not yet been implemented")
 	})
 	api.ThingsWeaviateThingsActionsListHandler = things.WeaviateThingsActionsListHandlerFunc(func(params things.WeaviateThingsActionsListParams, principal interface{}) middleware.Responder {
 		// Get limit and page
